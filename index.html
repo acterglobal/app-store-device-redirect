@@ -3,48 +3,50 @@
   <head>
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
-    <title>Redirecting ...</title>
+    <title>Installing Acter... redirecting</title>
     <meta name="description"
-      content="This page will redirect you to our app in the app store.">
+      content="This page will redirect you to the acter app in the app store.">
     <script type="text/javascript">
       function executeRedirect() {
         // Enable / disable debugging for testing:
         var debug = true;
         var googleStoreUrl = document.getElementById('google-store-link');
         var appleStoreUrl = document.getElementById('apple-store-link');
-        // Use Google Play Store as fallback by default (may be changed)!
-        var fallbackStoreUrl = googleStoreUrl;
+        var msStoreUrl = document.getElementById('msstore-link');
 
+        const queryString = window.location.search;
+        if (/qrcode/i.test(queryString)) {
+          // we skipped
+          console.log("skipped to show qrcode");
+          var qrtogleToggle = document.getElementById('qrcode-toggle');
+          return;
+        }
+ 
 
         var userAgent = navigator.userAgent || navigator.vendor || window.opera;
+        console.log(userAgent);
         // Android devices:
         if (googleStoreUrl && /android/i.test(userAgent)) {
-          if (debug) { alert('Detected: Android device'); }
+          if (debug) { if (!confirm('Detected: Android device')) { return } }
           window.location.href = googleStoreUrl;
-        }
-
-        // Apple devices:
-        else if (appleStoreUrl && /iPad|iPhone|iPod/.test(userAgent) && !window.MSStream) {
-          if (debug) { alert('Detected: Apple device'); }
+        } else if (appleStoreUrl && /iPad|iPhone|iPod|Mac/.test(userAgent) && !window.MSuserAgentStream) {
+          // Apple devices:
+          if (debug) { if (!confirm('Detected: Apple device')) { return }; }
           window.location.href = appleStoreUrl;
-        }
-
-        // Fallback: Windows and other devices:
-        else if (fallbackStoreUrl) {
-          if (debug) { alert('Detected: Unknown device. Redirecting to fallback.'); }
-          // Otherwise redirct to the fallback store URL:
-          window.location.href = fallbackStoreUrl;
+        } else if (msStoreUrl && /Windows|Win/.test(userAgent) && !window.MSuserAgentStream) {
+          // Apple devices:
+          if (debug) { if (!confirm('Detected: Windows device')) { return }; }
+          window.location.href = appleStoreUrl;
         } else {
           // Log error to console if no redirect was possible.
-          console.error('NO REDIRECT: User agent could not be detected and fallback app store url was not set.');
+          console.error('NO REDIRECT: User agent could not be detected. Showing static page.');
         }
       }
     </script>
     <style>
       .ci-color,
       a {
-        background-color: #2E90D0 !important;
-        color: #FFF;
+        color: #2E90D0;
       }
 
       html,
@@ -52,31 +54,14 @@
         margin: 0;
         padding: 0;
         width: 100%;
-        height: 100vh;
         display: flex;
         flex-direction: row;
         justify-content: center;
         align-items: center;
-        background-color: #6b6b6b;
+        background-color: rgb(33, 37, 41);
         color: #FFF;
         font-family: 'Verdana', 'Arial', sans-serif;
         font-size: 14px;
-        overflow: hidden;
-      }
-
-      body {
-        background: linear-gradient(160deg, rgba(71, 71, 71, 0.8) 20%,
-            rgba(119, 119, 119, 0.5) 20%,
-            rgba(77, 77, 77, 0.5) 35%,
-            rgba(53, 53, 53, 0.6) 35%,
-            rgba(56, 56, 56, 0.8) 45%,
-            rgba(43, 43, 43, 0.5) 45%,
-            rgba(46, 46, 46, 0.8) 75%,
-            rgba(82, 82, 82, 0.5) 75%),
-          linear-gradient(45deg, rgba(31, 31, 31, 0.8) 0%,
-            rgba(46, 46, 46, 0.8) 50%,
-            rgba(128, 128, 128, 0.8) 50%,
-            rgba(133, 146, 173, 0.8) 100%) #6b6b6b;
       }
 
       h1 {
@@ -90,34 +75,14 @@
         overflow: visible;
       }
 
+      #qrcode-toggle img {
+        margin: 10px;
+        max-width: 50vw;
+        max-height: 50wh; 
+      }
+
       .subtitle {
         font-style: italic;
-      }
-
-      .button-wrapper {
-        border: 1px #000 solid;
-        /* border-radius: 20px; */
-        margin: 20px;
-        padding: 20px;
-        background-color: #FFF;
-        text-align: center;
-        transition: 1s;
-        box-shadow: 6px 6px 0 #000;
-        transform: skewX(-15deg);
-      }
-
-      .button-wrapper::after {
-        content: '';
-        width: 60px;
-        height: 30px;
-        transform: skewX(-15deg);
-        border: 1px solid #FFF;
-        position: absolute;
-        z-index: -1;
-        top: 50%;
-        left: 50%;
-        transform: translate(-50%, -50%);
-        animation: pulse 3s infinite;
       }
 
       @keyframes pulse {
@@ -143,7 +108,7 @@
       }
 
       .column {
-        flex: 50%;
+        flex: 30%;
         min-width: 300px;
       }
     </style>
@@ -151,24 +116,43 @@
 
   <body>
     <div id="container">
-      <h1>You will now be redirected to our Apps, based on your device ...</h1>
+      <h1>You will now be redirected to the Acter Apps in the store based on your device ...</h1>
+
+      <details id="qrcode-toggle">
+        <summary>
+          <strong>QRCode</strong>
+        </summary>
+          <img src="./acter-qrcode.png" alt="QR-code to this page"/>
+      </details>
       <p class="subtitle">Otherwise select one of:</p>
-      <div id="stores" class="row">
-        <div class="store column" id="g">
-          <div class="button-wrapper ci-color">
-            <a href="https://play.google.com/store/apps/details?id=[PACKAGE-NAME]"
-              id="google-store-link"><strong>[APP-NAME]</strong><br />in Google Play
-              Store</a>
-          </div>
+
+      <div class="row" >
+        <div class="column">
+          <a id="google-store-link" href="https://play.google.com/store/apps/details?id=global.acter.a3&amp;pcampaignid=pcampaignidMKT-Other-global-all-co-prtnr-py-PartBadge-Mar2515-1">
+            <img alt="Get it on Google Play" width="250" src="https://play.google.com/intl/en_us/badges/static/images/badges/en_badge_web_generic.png">
+          </a>
         </div>
-        <div class="store column" id="a">
-          <div class="button-wrapper ci-color">
-            <a href="http://apps.apple.com/[COUNTRY]/app/[APP-NAME]/id[STORE-ID]]"
-              id="apple-store-link"><strong>[APP-NAME]</strong><br />in Apple App
-              Store</a>
-          </div>
+        <div class="column">
+          <a id="apple-store-link" href="https://apps.apple.com/us/app/acter/id6445989155?itsct=apps_box_badge&amp;itscg=30200">
+            <img src="https://tools.applemediaservices.com/api/badges/download-on-the-app-store/black/en-us?size=250x83&amp;releaseDate=1694390400" alt="Download on the App Store" style="border-radius: 13px; width: 250px; height: 83px;">
+          </a>
         </div>
+        <div class="column">
+          <a id="msstore-link" href="ms-windows-store://pdp/?ProductId=9NZLTDVTN203">
+            <img height="83" src="https://get.microsoft.com/images/en-us%20dark.svg" alt="Download Acter">
+          </a>
+        </div>
+        <div class="column">
+          <a href="https://dev.acter.global/user/getting-started/setting-up/#linux-flatpak">
+            <img height="83" src="https://dev.acter.global/images/flatpak-badge-en.svg" alt="Install Acter on Linux via Flatpak">
+          </a>
+        </div>
+        </p>
       </div>
+
+
+      <h1> Or learn more about <a href="https://acter.global">acter here</a></h1>
+      <img src="./iPhone 14 Pro Space Black Mockup.webp">
 
     </div>
     <script type="text/javascript">

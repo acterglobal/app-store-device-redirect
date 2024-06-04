@@ -1,26 +1,7 @@
 # App Store Device Redirect page
-Simple single-page HTML + Vanilla JavaScript App Store redirect page based on user agent.
-Can be used as template for individual implementations.
 
-## Demo
-Debug mode is enabled, that's the reason for the alters.
-https://webksde.github.io/app-store-device-redirect/index.html
+Just a simple static webpage hosted at https://app-redir.acter.global that
+either redirects you to the appropriate store automatically upon load
+or shows a simple Download-now webpage including the QRcode to this page.
 
-## Functionality
-Provides a static HTML page to redirect users to the app store of their device.
-The detection is based on the userAgent:
-`var userAgent = navigator.userAgent || navigator.vendor || window.opera;`
-
-## Supported stores & userAgents
-- Android ("android")
-- Apple ("iPad|iPhone|iPod")
-
-# Design
-The design is just a random example. Change it as needed, ensure to at least set the id attributes on the app store links, for example:
-~~~
-<a href="https://play.google.com/store/apps/details?id=[PACKAGE-NAME]" id="g-store-link"><strong>[APP-NAME]</strong><br />in Google Play Store</a>
-~~~
-~~~
-<a href="http://apps.apple.com/[COUNTRY]/app/[APP-NAME]/id[STORE-ID]]" id="a-store-link"><strong>[APP-NAME]</strong><br />in Apple App Store</a>`
-~~~
-So JavaScript can pick them up for the redirect, without having to define them twice.
+Based off https://github.com/webksde/app-store-device-redirect .
