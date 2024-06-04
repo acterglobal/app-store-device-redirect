@@ -9,7 +9,7 @@
     <script type="text/javascript">
       function executeRedirect() {
         // Enable / disable debugging for testing:
-        var debug = true;
+        var debug = false;
         var googleStoreUrl = document.getElementById('google-store-link');
         var appleStoreUrl = document.getElementById('apple-store-link');
         var msStoreUrl = document.getElementById('msstore-link');
@@ -19,6 +19,7 @@
           // we skipped
           console.log("skipped to show qrcode");
           var qrtogleToggle = document.getElementById('qrcode-toggle');
+          qrtogleToggle.open = true;
           return;
         }
  
